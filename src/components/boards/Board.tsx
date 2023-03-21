@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 export default function Board() {
 
-    const results: Number[][] = [
+    const results: number[][] = [
         [0, 1, 2],
         [3, 4, 5],
         [6, 7, 8],
@@ -23,9 +23,9 @@ export default function Board() {
 
     useEffect(() => {
 
-        results.map((result) => {
+        results.map((result: number[]) => {
 
-            let [firstElement, secondElement, thirdElement] = result.map(num => document.getElementById(num));
+            let [firstElement, secondElement, thirdElement] = result.map(num => document.getElementById(num.toString()));
 
             if(firstElement?.innerText == 'X' && secondElement?.innerText == 'X' && thirdElement?.innerText == 'X') {
                 alert('First player won game');
@@ -44,7 +44,7 @@ export default function Board() {
         const elements = [];
 
         for (let i = 0; i < 9; i++) {
-            elements.push(document.getElementById(i));
+            elements.push(document.getElementById(i.toString()));
         }
 
         const isDraw = elements.every(element => element?.hasChildNodes());

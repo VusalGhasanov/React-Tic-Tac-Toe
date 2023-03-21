@@ -29,7 +29,7 @@ export default function Square({id, next, reset, changeNext} : SquareType) {
 
     return (
         <>
-            <div id={id} ref={divRef} className={styles.square} onClick={clickEvent}></div>
+            <div id={id.toString()} ref={divRef} className={styles.square} onClick={clickEvent}></div>
         </>   
     )
 }
