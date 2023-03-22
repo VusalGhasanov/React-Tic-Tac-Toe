@@ -27,14 +27,14 @@ export default function Board() {
 
             let [firstElement, secondElement, thirdElement] = result.map(num => document.getElementById(num.toString()));
 
-            if(firstElement?.innerText == 'X' && secondElement?.innerText == 'X' && thirdElement?.innerText == 'X') {
-                alert('First player won game');
+            if(firstElement?.innerText == 'T' && secondElement?.innerText == 'T' && thirdElement?.innerText == 'T') {
+                alert('T player won game');
                 setReset(true);
                 return;
             }
 
-            if(firstElement?.innerText == 'O' && secondElement?.innerText == 'O' && thirdElement?.innerText == 'O') {
-                alert('Second player won game');
+            if(firstElement?.innerText == 'V' && secondElement?.innerText == 'V' && thirdElement?.innerText == 'V') {
+                alert('V player won game');
                 setReset(true);
                 return;
             }

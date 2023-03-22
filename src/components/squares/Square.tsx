@@ -22,7 +22,7 @@ export default function Square({id, next, reset, changeNext} : SquareType) {
 
         if (divRef.current.hasChildNodes()) return;
 
-        divRef.current.innerText = next == 1 ? 'X' : 'O';
+        divRef.current.innerText = next == 1 ? 'T' : 'V';
 
         changeNext(next == 1 ? 2 : 1);
     };
