@@ -21,26 +21,20 @@ export default function Board() {
 
     const [squares, setSquares] = useState(Array(9).fill(null));
 
-    useEffect(() => {
+    const checkWinner = (user: string) => {
 
-        results.map((result: number[]) => {
+        results.map( (result: number[]) => {
 
-            let [firstElement, secondElement, thirdElement] = result.map(num => document.getElementById(num.toString()));
+            const check = result.every( num => document.getElementById(num.toString())?.innerText == user);
 
-            if(firstElement?.innerText == 'T' && secondElement?.innerText == 'T' && thirdElement?.innerText == 'T') {
-                alert('T player won game');
-                setReset(true);
-                return;
+            if (check) {
+                alert(`${user} player won game`);
+                return setReset(true);
             }
+        })
+    } 
 
-            if(firstElement?.innerText == 'V' && secondElement?.innerText == 'V' && thirdElement?.innerText == 'V') {
-                alert('V player won game');
-                setReset(true);
-                return;
-            }
-
-        });
-
+    const checkDraw = () => {
         const elements = [];
 
         for (let i = 0; i < 9; i++) {
@@ -51,9 +45,18 @@ export default function Board() {
 
         if (isDraw) {
             alert('The game is draw');
-            setReset(true);
-            return;
+            return setReset(true);
         }
+    }
+
+    useEffect(() => {
+
+        checkWinner('T');
+
+        checkWinner('V');
+
+        checkDraw();
+
     }, [next]);
 
     return (
