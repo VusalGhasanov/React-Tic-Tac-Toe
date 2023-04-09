@@ -1,35 +1,17 @@
 import styles from './Square.module.css';
-import {MutableRefObject, useEffect, useRef} from 'react';
+import {forwardRef, ForwardedRef, MouseEventHandler} from 'react';
 
-type SquareType = {
+type SquarePropsType = {
     id: Number,
-    next: Number,
-    reset: Boolean,
-    changeNext: any
+    clickEvent: MouseEventHandler
 };
 
-export default function Square({id, next, reset, changeNext} : SquareType) {
-
-    const divRef = useRef() as MutableRefObject<HTMLDivElement>;
-
-    useEffect(() => {   
-
-        if (reset) divRef.current.innerText = '';
-
-    }, [reset])
-
-    const clickEvent = () => {
-
-        if (divRef.current.hasChildNodes()) return;
-
-        divRef.current.innerText = next == 1 ? 'T' : 'V';
-
-        changeNext(next == 1 ? 2 : 1);
-    };
-
+const Square = (props : SquarePropsType, ref: ForwardedRef<HTMLDivElement>) => {
     return (
         <>
-            <div id={id.toString()} ref={divRef} className={styles.square} onClick={clickEvent}></div>
+            <div id={props.id.toString()} ref={ref} className={styles.square} onClick={props.clickEvent}></div>
         </>   
     )
-}
+};
+
+export default forwardRef(Square);
