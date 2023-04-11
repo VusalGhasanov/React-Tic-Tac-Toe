@@ -1,19 +1,7 @@
 import Square from '@/components/squares/Square';
 import styles from './Board.module.css';
-import { Reducer, useEffect, useReducer, useRef } from 'react';
-
-interface InitialValues {
-    reset: boolean,
-    next: number,
-    squares: number[]
-}
-
-type ActionType = {
-    type: string,
-    reset: boolean,
-    next: number,
-    squares: number[]
-}
+import { Reducer, createRef, useEffect, useMemo, useReducer } from 'react';
+import {InitialValues, ActionType, SquareRefType} from './types';
 
 const reducer: Reducer<InitialValues, ActionType> = (state: InitialValues, action: ActionType) => {
 
@@ -63,7 +51,17 @@ export default function Board() {
         [2, 4, 6]
     ];
 
-    const squareRef = useRef<HTMLDivElement>(null);
+    const squareRefById: SquareRefType = useMemo(() => {
+
+		const refs: SquareRefType = {}
+
+		state.squares.forEach((square: number, key: number) => {
+			refs[key] = createRef<HTMLDivElement>();
+		});
+
+		return refs
+
+	}, [state.squares]);
 
     const checkWinner = (user: string) => {
 
@@ -76,7 +74,7 @@ export default function Board() {
 
                 return dispatch({
                     type : 'SET_RESET',
-                    reset : true
+                    reset : true                
                 });
             }
         })
@@ -101,25 +99,24 @@ export default function Board() {
         }
     }
 
-    const clickToSquare = () => {
+    const clickToSquare = (key: number) => {
 
-        if (squareRef.current === null) return false;
+        if (squareRefById[key]?.current?.hasChildNodes() || squareRefById[key]?.current === null) return;
 
-        if (squareRef.current.hasChildNodes()) return;
-
-        squareRef.current.innerText = state.next == 1 ? 'T' : 'V';
+        squareRefById[key]?.current?.innerText = state.next == 1 ? 'X' : 'O';
 
         dispatch({
             type : 'SET_NEXT',
-            next : next == 1 ? 2 : 1
+            next : state.next == 1 ? 2 : 1
         });
+
     };
 
     useEffect(() => {
 
-        checkWinner('T');
+        checkWinner('X');
 
-        checkWinner('V');
+        checkWinner('O');
 
         checkDraw();
 
@@ -127,7 +124,10 @@ export default function Board() {
 
     useEffect(() => {   
 
-        if (state.reset && squareRef.current !== null) squareRef.current.innerText = '';
+        state.squares.forEach( (square, key) => {
+            if (state.reset && squareRefById[key].current !== null) squareRefById[key].current.innerText = '';
+        })
+
 
     }, [state.reset])
 
@@ -139,7 +139,7 @@ export default function Board() {
                         return <Square 
                             id={key} 
                             key={key} 
-                            ref={squareRef} 
+                            ref={squareRefById[key]} 
                             clickEvent={clickToSquare} 
                         />
                 })}
