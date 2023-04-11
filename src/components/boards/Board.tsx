@@ -100,10 +100,10 @@ export default function Board() {
     }
 
     const clickToSquare = (key: number) => {
+        
+        if (squareRefById[key].current?.hasChildNodes()) return;
 
-        if (squareRefById[key]?.current?.hasChildNodes() || squareRefById[key]?.current === null) return;
-
-        squareRefById[key]?.current?.innerText = state.next == 1 ? 'X' : 'O';
+        squareRefById[key].current!.innerText = state.next == 1 ? 'X' : 'O';
 
         dispatch({
             type : 'SET_NEXT',
@@ -125,9 +125,10 @@ export default function Board() {
     useEffect(() => {   
 
         state.squares.forEach( (square, key) => {
-            if (state.reset && squareRefById[key].current !== null) squareRefById[key].current.innerText = '';
+            if (state.reset) squareRefById[key].current!.innerText = '';
         })
 
+        console.log(state.reset)
 
     }, [state.reset])
 
