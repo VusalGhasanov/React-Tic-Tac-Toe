@@ -123,14 +123,18 @@ export default function Board() {
     }, [state.next]);
 
     useEffect(() => {   
-
         state.squares.forEach( (square, key) => {
-            if (state.reset) squareRefById[key].current!.innerText = '';
-        })
+            if (state.reset) {
+                
+                squareRefById[key].current!.innerText = '';
 
-        console.log(state.reset)
-
-    }, [state.reset])
+                return dispatch({
+                    type : 'SET_RESET',
+                    reset : false                
+                });
+            }
+        });
+    }, [state.reset]);
 
     return (
         <>
